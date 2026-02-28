@@ -1,0 +1,11 @@
+from sqlalchemy import Column, String, Integer, ForeignKey, DateTime
+from app.utils.database import Base
+from datetime import datetime, timezone
+
+class RefreshToken(Base):
+    __tablename__ = 'refresh_tokens'
+    
+    id = Column(Integer, primary_key=True)
+    token = Column(String, index=True, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
