@@ -4,7 +4,14 @@ from sqlalchemy.orm import Session
 from app.models import urls as urls_model
 from random import choices
 
-def url_gen(original_url: str, custom_url: str, db: Session, owner_id: int):   
+
+# -------------------------------------------------
+#                  Generate url
+# -------------------------------------------------
+
+def url_gen(data: dict, owner_id: int, db: Session):
+    custom_url = data.get('shorten_url')
+    
     if custom_url:
         # fetch url
         url = db.query(urls_model.URL).filter(urls_model.URL.shorten_url == custom_url).first()
@@ -17,7 +24,7 @@ def url_gen(original_url: str, custom_url: str, db: Session, owner_id: int):
             )
         
         # insert custom url into db
-        new_url = urls_model.URL(owner_id=owner_id, original_url=original_url, shorten_url=custom_url)
+        new_url = urls_model.URL(owner_id=owner_id, original_url=data['original_url'], shorten_url=custom_url)
         db.add(new_url)
         db.commit()
         db.refresh(new_url)
@@ -46,7 +53,7 @@ def url_gen(original_url: str, custom_url: str, db: Session, owner_id: int):
         count += 1
     
     # insert custom url into db
-    new_url = urls_model.URL(owner_id=owner_id, original_url=original_url, shorten_url=generated_url)
+    new_url = urls_model.URL(owner_id=owner_id, original_url=data['original_url'], shorten_url=generated_url)
     db.add(new_url)
     db.commit()
     db.refresh(new_url)
