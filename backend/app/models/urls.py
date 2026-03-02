@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, BOOLEAN
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone, timedelta
 from app.utils.database import Base
@@ -16,6 +16,7 @@ class URL(Base):
     expires_at = Column(DateTime, default=lambda: datetime.now(timezone.utc) + timedelta(days=30))
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    is_deleted = Column(BOOLEAN, default=False)
     
     owner = relationship(
         'User',

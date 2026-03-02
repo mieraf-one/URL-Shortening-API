@@ -4,15 +4,12 @@ from sqlalchemy.orm import Session
 
 import os
 import jwt
-from dotenv import load_dotenv
 from pwdlib import PasswordHash
 from datetime import datetime, timedelta, timezone
 
 from app.utils.database import get_db
 from app.models import user as user_model, token as token_model
 
-# load env
-load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')

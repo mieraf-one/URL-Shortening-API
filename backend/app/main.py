@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+# load env
+load_dotenv()
+
 from fastapi import FastAPI
 from app.routers import auth as auth_router
 from app.routers import urls as urls_router

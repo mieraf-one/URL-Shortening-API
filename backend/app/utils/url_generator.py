@@ -14,7 +14,12 @@ def url_gen(data: dict, owner_id: int, db: Session):
     
     if custom_url:
         # fetch url
-        url = db.query(urls_model.URL).filter(urls_model.URL.shorten_url == custom_url).first()
+        url = (
+            db.query(urls_model.URL)
+                .filter(
+                    urls_model.URL.shorten_url == custom_url)
+                .first()
+        )
         
         # check if url already exists
         if url:
@@ -37,14 +42,19 @@ def url_gen(data: dict, owner_id: int, db: Session):
         generated_url = ''.join(choices([*string.ascii_letters, *string.digits], k=5))
         
         # fetch url
-        url = db.query(urls_model.URL).filter(urls_model.URL.shorten_url == generated_url).first()
+        url = (
+            db.query(urls_model.URL)
+                .filter(
+                    urls_model.URL.shorten_url == generated_url)
+                .first()
+        )
         
         # check if url already exists
         if url is None:
             break
         
         # raise an error if took too much checking
-        if count > 1000:
+        if count > 5000:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail='please try again'
